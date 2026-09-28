@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Privacy Policy — Quarry</title>
+<style>
+  :root{--fg:#1a1a1f;--fg2:#555;--fg3:#777;--line:#e4e4e8;--acc:#b8a800;--bg:#fff;--card:#fafafa}
+  @media (prefers-color-scheme:dark){
+    :root{--fg:#e8e6e1;--fg2:#b0aca4;--fg3:#8a867e;--line:#2c2c32;--acc:#f4ed36;--bg:#141416;--card:#1b1b1f}
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--fg);
+    font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased}
+  .wrap{max-width:760px;margin:0 auto;padding:48px 24px 80px}
+  header{border-bottom:1px solid var(--line);padding-bottom:20px;margin-bottom:32px}
+  .brand{display:flex;align-items:center;gap:12px}
+  .logo{width:34px;height:34px;border-radius:9px;background:var(--acc);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .logo svg{width:19px;height:19px;fill:#111;display:block}
+  h1{font-size:23px;margin:0;letter-spacing:-.01em}
+  .sub{color:var(--fg3);font-size:13px;margin-top:4px}
+  h2{font-size:17px;margin:36px 0 10px;letter-spacing:-.01em}
+  p{margin:0 0 14px;color:var(--fg2)}
+  strong{color:var(--fg)}
+  ul{margin:0 0 14px;padding-left:22px;color:var(--fg2)}
+  li{margin-bottom:6px}
+  code{font:13px ui-monospace,SFMono-Regular,Menlo,monospace;background:var(--card);
+    border:1px solid var(--line);border-radius:4px;padding:1px 5px}
+  table{border-collapse:collapse;width:100%;margin:0 0 16px;font-size:14px}
+  th,td{text-align:left;padding:9px 12px;border:1px solid var(--line);vertical-align:top;color:var(--fg2)}
+  th{background:var(--card);color:var(--fg);font-weight:600}
+  .callout{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--acc);
+    border-radius:6px;padding:14px 16px;margin:0 0 18px}
+  .callout p:last-child{margin:0}
+  .lang{margin-top:64px;padding-top:32px;border-top:2px solid var(--line)}
+  footer{margin-top:56px;padding-top:20px;border-top:1px solid var(--line);color:var(--fg3);font-size:13px}
+  a{color:var(--acc)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="brand">
+      <div class="logo"><svg viewBox="0 0 24 24"><path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z"/></svg></div>
+      <div>
+        <h1>Privacy Policy — Quarry</h1>
+        <div class="sub">Last updated: 28 September 2026 · Chrome extension “Quarry — Web Intelligence”</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ══════════════ ENGLISH ══════════════ -->
+  <p>Quarry is a security reconnaissance extension for bug bounty and <strong>authorized</strong>
+  penetration testing. This policy explains exactly what data the extension handles and where it goes.</p>
+
+  <div class="callout">
+    <p><strong>Core principle: your data stays on your machine.</strong> Everything Quarry captures while
+    you browse — resources, endpoints, secrets, request/response bodies, cookies, tokens, storage and the
+    knowledge graph — is stored <strong>exclusively in your browser's local storage</strong>
+    (<code>chrome.storage.local</code>). <strong>None of it is sent to us or to any server operated by
+    the developer.</strong> There is no telemetry, no analytics, no account and no backend.</p>
+  </div>
+
+  <h2>What leaves your machine, and where it goes</h2>
+  <table>
+    <tr><th>Data</th><th>Destination</th><th>When</th></tr>
+    <tr>
+      <td>Page content/structure (snapshot) and your stated objective</td>
+      <td>The LLM endpoint <strong>you configured</strong> (OpenAI, Anthropic, local Ollama, etc.)</td>
+      <td>Only when you run the AI agent, using your own API key. Authorization headers, cookies, e-mail addresses, query tokens, JWTs and API keys are masked before sending. Page text can still contain personal data no pattern covers.</td>
+    </tr>
+    <tr>
+      <td>Your objective, the page URL and title, and short descriptions of candidate actions</td>
+      <td>TypeSafe AI (Jev), only if you turn <strong>Use Jev</strong> on and save a TypeSafe key</td>
+      <td>The same masking applies. Jev picks among a closed set of actions and does not receive the full snapshot.</td>
+    </tr>
+    <tr>
+      <td>Exports (ZIP)</td>
+      <td>Downloaded locally by you</td>
+      <td>Only when you click export</td>
+    </tr>
+  </table>
+
+  <p><strong>We do not proxy the LLM.</strong> When the agent runs, data goes directly from the extension
+  to the AI provider you chose, authenticated with your own key. That provider's privacy policy governs
+  that traffic.</p>
+
+  <h2>Your LLM API key</h2>
+  <p>Your API key is used solely to authenticate calls to the provider you configured. If you turn Jev
+  on, the TypeSafe key is used only in the <code>Authorization</code> header of direct calls to
+  <code>https://api.typesafe.ai</code>. Both keys stay <strong>in your browser's storage</strong>
+  (<code>chrome.storage.local</code>) and are <strong>never sent to us</strong>.</p>
+
+  <h2>Permissions and why they are needed</h2>
+  <ul>
+    <li><code>webRequest</code>, <code>&lt;all_urls&gt;</code> — passively observe traffic to map the
+    attack surface. This permission is read-only.</li>
+    <li><code>scripting</code> and content scripts — instrument the page to capture endpoints, sinks and storage.</li>
+    <li><code>storage</code>, <code>unlimitedStorage</code> — keep the recon session locally.</li>
+    <li><code>downloads</code> — save exports to your disk when you ask for them.</li>
+    <li><code>declarativeNetRequest</code> — optional block or mock rules you create yourself. Off until you add one.</li>
+    <li><code>tabs</code>, <code>webNavigation</code>, <code>sidePanel</code> — UI and binding the session to the right site.</li>
+    <li><code>cookies</code> — read cookie flags for the current site. Values stay local and are masked if quoted in an agent snapshot.</li>
+    <li><code>debugger</code> — only while an agent run you started is in progress, and only to send real mouse and keyboard events to that tab. It is detached when the run ends or you stop it. Chrome shows “started debugging this browser” for that interval.</li>
+  </ul>
+
+  <h2>Retention and deletion</h2>
+  <p>You are in control: the clear button wipes the session, and uninstalling the extension removes all
+  local data. We keep no copy, because we never receive one.</p>
+
+  <h2>Children</h2>
+  <p>Quarry is a professional security tool and is not directed at children under 13.</p>
+
+  <h2>Changes to this policy</h2>
+  <p>If this policy changes, the “last updated” date above changes with it, and the new version is
+  published at this same URL.</p>
+
+  <h2>Contact</h2>
+  <p>Questions about privacy? Use the <strong>Support</strong> tab on our
+  <a href="https://chrome.google.com/webstore/">Chrome Web Store listing</a> — messages sent there
+  reach the developer directly.</p>
+  <!-- Opcional: se quiser um e-mail direto, descomente e preencha.
+  <p>Or email us at: <strong>seu-email@exemplo.com</strong></p> -->
+
+  <!-- ══════════════ PORTUGUÊS ══════════════ -->
+  <div class="lang">
+    <h1 style="font-size:20px">Política de Privacidade — Quarry (Português)</h1>
+
+    <p>O Quarry é uma extensão de reconhecimento de segurança para bug bounty e pentest
+    <strong>autorizado</strong>. Esta política explica exatamente quais dados a extensão manipula e para
+    onde eles vão.</p>
+
+    <div class="callout">
+      <p><strong>Princípio central: seus dados ficam na sua máquina.</strong> Tudo que o Quarry captura
+      enquanto você navega — recursos, endpoints, segredos, corpos de requisição/resposta, cookies,
+      tokens, storage e o grafo — é armazenado <strong>exclusivamente no armazenamento local do seu
+      navegador</strong> (<code>chrome.storage.local</code>). <strong>Nada disso é enviado para nós nem
+      para qualquer servidor do desenvolvedor.</strong> Não há telemetria, análise, conta ou backend.</p>
+    </div>
+
+    <h2>O que sai da sua máquina, e para onde</h2>
+    <table>
+      <tr><th>Dado</th><th>Destino</th><th>Quando</th></tr>
+      <tr>
+        <td>Conteúdo/estrutura da página (snapshot) e o objetivo que você escreveu</td>
+        <td>O endpoint de LLM <strong>que você configurou</strong> (OpenAI, Anthropic, Ollama local, etc.)</td>
+        <td>Somente quando você executa o agente de IA, com a sua própria chave. Authorization, cookies, e-mails, tokens em query, JWTs e chaves de API são mascarados antes do envio. Texto da página ainda pode ter dado pessoal que nenhum padrão cobre.</td>
+      </tr>
+      <tr>
+        <td>Objetivo, URL, título e descrições curtas das ações candidatas</td>
+        <td>TypeSafe AI (Jev), só se você ligar <strong>Usar Jev</strong> e salvar uma chave TypeSafe</td>
+        <td>A mesma máscara vale. O Jev escolhe entre ações fechadas e não recebe o snapshot inteiro.</td>
+      </tr>
+      <tr>
+        <td>Exportações (ZIP)</td>
+        <td>Baixadas localmente por você</td>
+        <td>Somente quando você clica em exportar</td>
+      </tr>
+    </table>
+
+    <p><strong>Não intermediamos o LLM.</strong> Quando o agente roda, os dados vão direto da extensão
+    para o provedor de IA que você escolheu, com a sua própria chave. A política de privacidade desse
+    provedor se aplica a esse tráfego.</p>
+
+    <h2>Sua chave de API do LLM</h2>
+    <p>Sua chave é usada apenas para autenticar chamadas ao provedor que você configurou. Se ligar o Jev,
+    essa outra chave vai só no cabeçalho <code>Authorization</code> das chamadas diretas para
+    <code>https://api.typesafe.ai</code>. As duas ficam <strong>no armazenamento do navegador</strong>
+    (<code>chrome.storage.local</code>) e <strong>nunca são enviadas a nós</strong>.</p>
+
+    <h2>Permissões e por quê</h2>
+    <ul>
+      <li><code>webRequest</code>, <code>&lt;all_urls&gt;</code> — observar o tráfego passivamente para
+      mapear a superfície de ataque. Essa permissão é só leitura.</li>
+      <li><code>scripting</code> e content scripts — instrumentar a página para capturar endpoints, sinks e storage.</li>
+      <li><code>storage</code>, <code>unlimitedStorage</code> — guardar a sessão de recon localmente.</li>
+      <li><code>downloads</code> — salvar as exportações no seu disco quando você pedir.</li>
+      <li><code>declarativeNetRequest</code> — bloquear ou simular request só se você criar a regra. Desligado até lá.</li>
+      <li><code>tabs</code>, <code>webNavigation</code>, <code>sidePanel</code> — interface e vínculo da sessão ao site correto.</li>
+      <li><code>cookies</code> — ler as flags dos cookies do site atual. O valor fica local e é mascarado se aparecer no snapshot do agente.</li>
+      <li><code>debugger</code> — só durante um run do agente que você iniciou, e só para enviar mouse e teclado reais àquela aba. Solta ao terminar ou ao parar. O Chrome mostra “started debugging this browser” nesse intervalo.</li>
+    </ul>
+
+    <h2>Retenção e exclusão</h2>
+    <p>Você controla tudo: o botão de limpar apaga a sessão, e desinstalar a extensão remove todos os
+    dados locais. Não guardamos cópia, porque nunca recebemos nenhuma.</p>
+
+    <h2>Contato</h2>
+    <p>Dúvidas sobre privacidade? Use a aba <strong>Suporte</strong> na nossa
+    <a href="https://chrome.google.com/webstore/">ficha da Chrome Web Store</a> — as mensagens
+    enviadas por lá chegam direto ao desenvolvedor.</p>
+  </div>
+
+  <footer>
+    Quarry — Web Intelligence · Ferramenta para uso autorizado apenas / For authorized use only
+  </footer>
+
+</div>
+</body>
+</html>
